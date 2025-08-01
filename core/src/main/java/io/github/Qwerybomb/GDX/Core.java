@@ -10,9 +10,6 @@ import com.badlogic.gdx.Screen;
 
 public class Core extends Game {
 
-    // asset creation
-
-
 
     @Override
     public void create() {
@@ -28,8 +25,8 @@ public class Core extends Game {
     // render game loop
     @Override
     public void render() {
+        // required for proper screen rendering
         super.render();
-
     }
 
     public void changeScreen(Screen screen) {

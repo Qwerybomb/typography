@@ -12,8 +12,6 @@ public class introScreen implements Screen {
     private Core game;
     private SpriteBatch batch;
     private Texture image;
-    int loop = 300;
-    int par = 0;
 
     introScreen(Core game) {
         this.game = game;
