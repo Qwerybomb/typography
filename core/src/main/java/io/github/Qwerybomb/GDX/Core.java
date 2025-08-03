@@ -29,8 +29,4 @@ public class Core extends Game {
         super.render();
     }
 
-    public void changeScreen(Screen screen) {
-        setScreen(screen);
-    }
-
 }
