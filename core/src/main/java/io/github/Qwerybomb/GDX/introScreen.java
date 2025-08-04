@@ -1,19 +1,20 @@
 package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.graphics.g3d.model.Node;
+import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 public class introScreen extends ScreenAdapter {
     private Core game;
@@ -51,7 +52,7 @@ public class introScreen extends ScreenAdapter {
 
         // create orb and base
         ObjLoader loader = new ObjLoader();
-        Model model = loader.loadModel(Gdx.files.internal("orb2.obj"));
+        Model model = loader.loadModel(Gdx.files.internal("orb2.obj"), true);
         Model model2 = loader.loadModel(Gdx.files.internal("base.obj"));
         orb = new ModelInstance(model);
         base = new ModelInstance(model2);
