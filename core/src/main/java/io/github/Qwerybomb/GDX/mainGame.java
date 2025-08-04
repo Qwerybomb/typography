@@ -1,6 +1,7 @@
 package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.*;
 
@@ -16,13 +18,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class mainGame implements Screen {
+public class mainGame extends ScreenAdapter {
 
     // creates main game elements
     PerspectiveCamera camera;
     Core game;
     ModelBatch batch = null;
-    Model floor = null;
+    Model orb = null;
     Environment environment;
 
     // storage for all models
@@ -38,7 +40,6 @@ public class mainGame implements Screen {
     @Override
     public void show() {
         //creation
-        Material grass = new Material(TextureAttribute.createDiffuse(new Texture("leaves.png")));
         batch = new ModelBatch();
         camera = new PerspectiveCamera(90f,
             Gdx.graphics.getWidth(),
@@ -51,12 +52,11 @@ public class mainGame implements Screen {
         camera.far = 300f;
         camera.update();
 
-        // create test cube
-        ModelBuilder modelBuilder = new ModelBuilder();
-        floor = modelBuilder.createBox(20f, 5f, 20f, grass,  VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates);
+        // create nothing
+        ObjLoader loader = new ObjLoader();
 
-        for (int i = 0; i < 1; i++) {
-            modelAdd(new ModelInstance(floor),"block_" + Integer.toString(i));
+        for (int i = 0; i < 0; i++) {
+            modelAdd(null, "nothing");
             models.get(models.size() - 1).transform.setToTranslation(0, 0, (i * 5));
         }
 
@@ -79,36 +79,13 @@ public class mainGame implements Screen {
         for (ModelInstance mod : models) {
             batch.render(mod, environment);
         }
-
         batch.end();
-        modelGet("block_0").transform.rotate(1, 0, 1, 1f);
-        System.out.println(Arrays.toString(modelGet("block_0").nodes.toArray()));
     }
 
-    @Override
-    public void resize(int i, int i1) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
+    // clear out the memory to prevent leaks
     @Override
     public void dispose() {
       batch.dispose();
-      floor.dispose();
     }
 
     // functions to simplify adding and retrieving models from a list
