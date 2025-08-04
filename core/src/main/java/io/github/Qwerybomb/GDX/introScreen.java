@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -21,6 +22,7 @@ public class introScreen extends ScreenAdapter {
     PerspectiveCamera camera;
     ModelBatch Mbatch = null;
     ModelInstance orb = null;
+    ModelInstance base = null;
     Environment environment;
     float orbMovement = 0;
 
@@ -36,22 +38,26 @@ public class introScreen extends ScreenAdapter {
         Mbatch = new ModelBatch();
 
         // set up basic camera
-        camera = new PerspectiveCamera(90f,
+        camera = new PerspectiveCamera(60f,
             Gdx.graphics.getWidth(),
             Gdx.graphics.getHeight());
-        camera.position.set(10f, 10f, 10f);
-        camera.lookAt(0f, 0f, 0f);
+        camera.position.set(15f, 5f, 10f);
+        camera.lookAt(-40f, -20f, 0f);
 
         // camera render distances
         camera.near = 0.1f;
         camera.far = 300f;
         camera.update();
 
-        // create orb
+        // create orb and base
         ObjLoader loader = new ObjLoader();
         Model model = loader.loadModel(Gdx.files.internal("orb2.obj"));
+        Model model2 = loader.loadModel(Gdx.files.internal("base.obj"));
         orb = new ModelInstance(model);
-        orb.transform.scale(10f, 10f, 10f);
+        base = new ModelInstance(model2);
+        base.transform.setToTranslation(0f, -6f, 0f);
+        base.transform.scale(5f, 5f, 5f);
+        orb.transform.scale(5f, 5f, 5f);
 
         // set up the enviornment and lighting
         environment = new Environment();
@@ -72,14 +78,13 @@ public class introScreen extends ScreenAdapter {
         // draw 3d elements
         Mbatch.begin(camera);
         Mbatch.render(orb, environment);
+        Mbatch.render(base, environment);
         Mbatch.end();
 
         // perform transformations
-        orbMovement += 0.05;
-        orb.transform.setToTranslation(orb.transform.getTranslation(new Vector3()).x,
-            (float) (orb.transform.getTranslation(new Vector3()).y + (Math.cos(orbMovement) * 0.2)),
-            orb.transform.getTranslation(new Vector3()).z);
-        orb.transform.scale(5f, 5f, 5f);
+        orbMovement += 0.03;
+        orb.transform.translate(0f, (float) (Math.cos(orbMovement) * 0.005), 0f);
+        orb.transform.rotate(0, 1f, 0, 1f);
     }
 
 
