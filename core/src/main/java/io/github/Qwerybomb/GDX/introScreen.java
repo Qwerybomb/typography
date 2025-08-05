@@ -3,6 +3,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -59,7 +60,7 @@ public class introScreen extends ScreenAdapter {
         base.transform.setToTranslation(0f, -6f, 0f);
         base.transform.scale(5f, 5f, 5f);
         orb.transform.scale(5f, 5f, 5f);
-
+        base.transform.rotate(0, 1f, 0, 5f);
         // set up the enviornment and lighting
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 0.2f));

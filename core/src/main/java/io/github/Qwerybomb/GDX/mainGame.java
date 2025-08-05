@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class mainGame extends ScreenAdapter {
+public class mainGame extends ScreenAdapter implements gameUtils {
 
     // creates main game elements
     PerspectiveCamera camera;
@@ -26,10 +26,6 @@ public class mainGame extends ScreenAdapter {
     ModelBatch batch = null;
     Model orb = null;
     Environment environment;
-
-    // storage for all models
-    ArrayList<ModelInstance> models = new ArrayList<>();
-    HashMap<String, Integer> modelNames = new HashMap<>();
 
     // adds in the main core class
     mainGame(Core game) {
@@ -54,11 +50,6 @@ public class mainGame extends ScreenAdapter {
 
         // create nothing
         ObjLoader loader = new ObjLoader();
-
-        for (int i = 0; i < 0; i++) {
-            modelAdd(null, "nothing");
-            models.get(models.size() - 1).transform.setToTranslation(0, 0, (i * 5));
-        }
 
         // set up the enviornment and lighting
         environment = new Environment();
@@ -88,12 +79,4 @@ public class mainGame extends ScreenAdapter {
       batch.dispose();
     }
 
-    // functions to simplify adding and retrieving models from a list
-    public ModelInstance modelGet(String name) {
-        return models.get(modelNames.get(name));
-    }
-    public void modelAdd(ModelInstance mod, String name) {
-        models.add(mod);
-        modelNames.put(name, models.size() - 1);
-    }
 }

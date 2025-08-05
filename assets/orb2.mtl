@@ -1,2 +1,12 @@
 # Blender 4.5.1 LTS MTL File: 'orb.blend'
 # www.blender.org
+
+newmtl Material.001
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.100000 0.100000 0.100000
+Ni 1.800000
+d 0.98
+illum 2
+map_Kd orbOfWisdom.png
