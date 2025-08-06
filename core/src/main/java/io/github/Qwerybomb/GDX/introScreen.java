@@ -14,21 +14,28 @@ import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.NodePart;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
-
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 public class introScreen extends ScreenAdapter {
     private Core game;
     private SpriteBatch batch;
-    private Texture image;
     PerspectiveCamera camera;
     ModelBatch Mbatch = null;
     ModelInstance orb = null;
     ModelInstance base = null;
     Environment environment;
     float orbMovement = 0;
+    private TextureAtlas textureAtlas;
+    private Sprite playButton1;
+    private Sprite playButton2;
 
     introScreen(Core game) {
         this.game = game;
@@ -53,10 +60,17 @@ public class introScreen extends ScreenAdapter {
         camera.far = 300f;
         camera.update();
 
+        // create buttons
+        textureAtlas = new TextureAtlas("playButtons.atlas");
+        playButton1 = textureAtlas.createSprite("play");
+        playButton1.setOriginCenter();
+        playButton1.setScale(0.15f, 0.15f);
+        playButton2 = textureAtlas.createSprite("play2");
+
         // create orb and base
         ObjLoader loader = new ObjLoader();
         Model model = loader.loadModel(Gdx.files.internal("orb2.obj"), true);
-        Model model2 = loader.loadModel(Gdx.files.internal("base.obj"));
+        Model model2 = loader.loadModel(Gdx.files.internal("base.obj"), true);
         orb = new ModelInstance(model);
         base = new ModelInstance(model2);
         base.transform.setToTranslation(0f, -6f, 0f);
@@ -76,15 +90,18 @@ public class introScreen extends ScreenAdapter {
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        // draw Ui elements
-        batch.begin();
-        batch.end();
 
         // draw 3d elements
         Mbatch.begin(camera);
         Mbatch.render(orb, environment);
         Mbatch.render(base, environment);
         Mbatch.end();
+
+        // draw Ui elements
+        batch.begin();
+        playButton1.setPosition(-750, -240);
+        playButton1.draw(batch);
+        batch.end();
 
         // perform transformations
         orbMovement += 0.03;
@@ -96,7 +113,7 @@ public class introScreen extends ScreenAdapter {
     // prevents memory leaks
     @Override
     public void dispose() {
-      image.dispose();
+
       batch.dispose();
     }
 }

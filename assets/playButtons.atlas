@@ -1,0 +1,12 @@
+playButtons.png
+size: 1818, 1585
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+play
+  bounds: 1, 769, 1794, 815
+  offsets: 68, 227, 2048, 1042
+play2
+  bounds: 1, 1, 1816, 766
+  offsets: 67, 205, 2048, 1042
