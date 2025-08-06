@@ -14,8 +14,7 @@ public interface gameUtils {
         return models.get(modelNames.get(name));
     }
     public default void modelAdd(ModelInstance mod, String name) {
-        models.add(mod);
-        modelNames.put(name, models.size() - 1);
+        models.add(mod); modelNames.put(name, models.size() - 1);
     }
 
 }

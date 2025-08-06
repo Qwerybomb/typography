@@ -61,7 +61,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
     @Override
     public void render(float v) {
 
-        // clear the screen and begin the batch rendering
+        // clear the screen
         Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
