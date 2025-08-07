@@ -18,11 +18,13 @@ public interface gameUtils {
     Model orb = objLoad.loadModel(Gdx.files.internal("orb2.obj"), true);
     Model orbBase = objLoad.loadModel(Gdx.files.internal("base.obj"), true);
 
+    // load in 2d sprites from atlas
+
+
     // functions to simplify adding and retrieving models from a list
     public default ModelInstance modelGet(String name) {
         return models.get(modelNames.get(name));
     }
-    public default void modelAdd(ModelInstance mod, String name) { models.add(mod); modelNames.put(name, models.size() - 1);
-    }
+    public default void modelAdd(ModelInstance mod, String name) { models.add(mod); modelNames.put(name, models.size() - 1); }
 
 }
