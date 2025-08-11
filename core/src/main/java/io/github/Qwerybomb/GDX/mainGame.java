@@ -32,31 +32,6 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         this.game = game;
     }
 
-
-    @Override
-    public void show() {
-        //creation
-        batch = new ModelBatch();
-        camera = new PerspectiveCamera(90f,
-            Gdx.graphics.getWidth(),
-            Gdx.graphics.getHeight());
-        camera.position.set(10f, 10f, 10f);
-        camera.lookAt(0f, 0f, 0f);
-
-        // camera render distances
-        camera.near = 0.1f;
-        camera.far = 300f;
-        camera.update();
-
-        // create nothing
-        ObjLoader loader = new ObjLoader();
-
-        // set up the enviornment and lighting
-        environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 0.2f));
-        environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, -0.8f, -0.8f));
-    }
-
     // primary render loop and main code setup
     @Override
     public void render(float v) {
@@ -79,4 +54,25 @@ public class mainGame extends ScreenAdapter implements gameUtils {
       batch.dispose();
     }
 
+    // instantiation of the camera and whatnot
+    @Override
+    public void show() {
+        //creation
+        batch = new ModelBatch();
+        camera = new PerspectiveCamera(90f,
+            Gdx.graphics.getWidth(),
+            Gdx.graphics.getHeight());
+        camera.position.set(10f, 10f, 10f);
+        camera.lookAt(0f, 0f, 0f);
+
+        // camera render distances
+        camera.near = 0.1f;
+        camera.far = 300f;
+        camera.update();
+
+        // set up the enviornment and lighting
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 0.2f));
+        environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, -0.8f, -0.8f));
+    }
 }
