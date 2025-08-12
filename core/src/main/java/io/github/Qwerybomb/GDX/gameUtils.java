@@ -16,11 +16,11 @@ public interface gameUtils {
 
     // Load in basic models
     ObjLoader objLoad = new ObjLoader();
-    Model orb = objLoad.loadModel(Gdx.files.internal("orb2.obj"), true);
-    Model orbBase = objLoad.loadModel(Gdx.files.internal("base.obj"), true);
+    Model orb = objLoad.loadModel(Gdx.files.internal("orb/orb2.obj"), true);
+    Model orbBase = objLoad.loadModel(Gdx.files.internal("orbBase/base.obj"), true);
 
     // load in 2d sprites from atlas
-    TextureAtlas playButtons = new TextureAtlas("playButtons.atlas");
+    TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
 
     // functions to simplify adding and retrieving models from a list
     public default ModelInstance modelGet(String name) {

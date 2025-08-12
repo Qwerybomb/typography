@@ -1,4 +1,5 @@
 package io.github.Qwerybomb.GDX;
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -46,6 +47,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
             batch.render(mod, environment);
         }
         batch.end();
+
     }
 
     // clear out the memory to prevent leaks

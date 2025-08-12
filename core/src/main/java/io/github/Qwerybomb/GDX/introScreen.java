@@ -80,7 +80,7 @@ public class introScreen extends ScreenAdapter {
         // create button
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
-        textureAtlas = new TextureAtlas("playButtons.atlas");
+        textureAtlas = new TextureAtlas("textures/playButtons.atlas");
         buttonSkin = new Skin();
         buttonSkin.addRegions(textureAtlas);
         Button.ButtonStyle buttonConfig = new Button.ButtonStyle();
@@ -98,8 +98,8 @@ public class introScreen extends ScreenAdapter {
 
         // create orb and base
         ObjLoader loader = new ObjLoader();
-        Model model = loader.loadModel(Gdx.files.internal("orb2.obj"), true);
-        Model model2 = loader.loadModel(Gdx.files.internal("base.obj"), true);
+        Model model = loader.loadModel(Gdx.files.internal("orb/orb2.obj"), true);
+        Model model2 = loader.loadModel(Gdx.files.internal("orbBase/base.obj"), true);
         orb = new ModelInstance(model);
         base = new ModelInstance(model2);
         base.transform.setToTranslation(0f, -6f, 0f);
