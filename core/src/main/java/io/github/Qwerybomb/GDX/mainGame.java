@@ -25,29 +25,11 @@ public class mainGame extends ScreenAdapter implements gameUtils {
     PerspectiveCamera camera;
     Core game;
     ModelBatch batch = null;
-    Model orb = null;
     Environment environment;
 
     // adds in the main core class
     mainGame(Core game) {
         this.game = game;
-    }
-
-    // primary render loop and main code setup
-    @Override
-    public void render(float v) {
-
-        // clear the screen
-        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-        // render all models
-        batch.begin(camera);
-        for (ModelInstance mod : models) {
-            batch.render(mod, environment);
-        }
-        batch.end();
-
     }
 
     // clear out the memory to prevent leaks
@@ -76,5 +58,22 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 0.2f));
         environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, -0.8f, -0.8f));
+    }
+
+    // primary render loop and main code setup
+    @Override
+    public void render(float v) {
+
+        // clear the screen
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        // render all models
+        batch.begin(camera);
+        for (ModelInstance mod : models) {
+            batch.render(mod, environment);
+        }
+        batch.end();
+
     }
 }

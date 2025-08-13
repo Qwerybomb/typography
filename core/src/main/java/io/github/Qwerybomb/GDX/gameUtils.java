@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,8 @@ public interface gameUtils {
     Model orb = objLoad.loadModel(Gdx.files.internal("orb/orb2.obj"), true);
     Model orbBase = objLoad.loadModel(Gdx.files.internal("orbBase/base.obj"), true);
 
-    // load in 2d sprites from atlas
+    // 2d handling
+    Stage uiStage = new Stage();
     TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
 
     // functions to simplify adding and retrieving models from a list
@@ -29,11 +31,7 @@ public interface gameUtils {
     public default void modelAdd(ModelInstance mod, String name) { models.add(mod); modelNames.put(name, models.size() - 1); }
 
     // function for pausing
-    public default void pause(long milliseconds) {
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public default void pause(long milliseconds) throws InterruptedException {
+        Thread.sleep(milliseconds);
     }
 }
