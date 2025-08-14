@@ -1,8 +1,5 @@
 package io.github.Qwerybomb.GDX;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -58,6 +55,10 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 0.2f));
         environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, -0.8f, -0.8f));
+
+        // create the spawn zone
+        makeCathedral(0,0,0);
+
     }
 
     // primary render loop and main code setup
@@ -75,5 +76,6 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         }
         batch.end();
 
+        playerMovement(this.camera);
     }
 }

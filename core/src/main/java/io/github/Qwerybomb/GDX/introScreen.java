@@ -51,6 +51,9 @@ public class introScreen extends ScreenAdapter {
         // draw Ui elements
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+        if (button.isPressed()) {
+            game.setScreen(new mainGame(this.game));
+        }
 
         // perform transformations
         orbMovement += 0.03;
