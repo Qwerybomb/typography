@@ -1,11 +1,14 @@
 package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,9 +16,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public interface gameUtils {
+    // basic variables
+    Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
+    float CameraSpeed = 2f;
+    Quaternion rotationQuant = new Quaternion();
+    AtomicInteger DeltaX = new AtomicInteger();
+    AtomicInteger DeltaY = new AtomicInteger();
+
     // storage for all models and basic variable init
     ArrayList<ModelInstance> models = new ArrayList<>();
     HashMap<String, Integer> modelNames = new HashMap<>();
@@ -25,6 +36,7 @@ public interface gameUtils {
     Model orb = objLoad.loadModel(Gdx.files.internal("orb/orb2.obj"), true);
     Model orbBase = objLoad.loadModel(Gdx.files.internal("orbBase/base.obj"), true);
     Model floorTile = objLoad.loadModel(Gdx.files.internal("floorTile/floorTile.obj"), true);
+
     // 2d handling
     Stage uiStage = new Stage();
     TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
@@ -42,16 +54,52 @@ public interface gameUtils {
 
     // function for creating the spawn cathedral
     public default void makeCathedral(int x, int y, int z) {
-        modelAdd(floorTile, "Cathedral_1").transform.setToTranslation(x, y, z);
-        modelAdd(floorTile, "Cathedral_2").transform.setToTranslation(x + 10.898854f, y, z);
+        for (int i = 0; i < 5; i++) {
+            modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, z);
+        }
+        for (int i = 1; i < 5; i++) {
+            modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x + (ftBounds.x * i), y, z);
+        }
     }
 
-    // loop function for player movement
+    // anonymous inputAdapter class for precise mouse control
+    InputAdapter inputs = new InputAdapter() {
+        int lastMouseX;
+        int lastMouseY;
+        PerspectiveCamera camera;
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            int deltaX = screenX - lastMouseX;
+            int deltaY = screenY - lastMouseY;
+
+            DeltaX.set(deltaX);
+            DeltaY.set(deltaY);
+
+            lastMouseX = screenX;
+            lastMouseY = screenY;
+            return true;
+        }
+    };
+
+    // function for player movement
     public default void playerMovement(PerspectiveCamera camera) {
-       if (!Gdx.input.isCursorCatched()) Gdx.input.setCursorCatched(true);
+        float sensitivity = 0.4f; // bigger = faster rotation
+        float deltaX = -DeltaX.get() * sensitivity;
+        float deltaY = -DeltaY.get() * sensitivity;
+        camera.direction.rotate(Vector3.Y, deltaX);
+        Vector3 right = camera.direction.cpy().crs(Vector3.Y).nor();
+        camera.direction.rotate(right, deltaY);
+        camera.direction.nor();
+        camera.update();
+        DeltaX.set(0);
+        DeltaY.set(0);
+
+       if (!Gdx.input.isCursorCatched()) {Gdx.input.setCursorCatched(true); Gdx.input.setInputProcessor(inputs); }
        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
            camera.position.set(camera.position.x + 1, camera.position.y, camera.position.z);
        }
        camera.update();
     }
+
 }

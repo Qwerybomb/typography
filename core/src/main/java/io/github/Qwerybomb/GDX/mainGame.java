@@ -43,12 +43,11 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         camera = new PerspectiveCamera(90f,
             Gdx.graphics.getWidth(),
             Gdx.graphics.getHeight());
-        camera.position.set(10f, 10f, 10f);
-        camera.lookAt(0f, 0f, 0f);
+        camera.position.set(0f, 10f, 0f);
 
         // camera render distances
         camera.near = 0.1f;
-        camera.far = 300f;
+        camera.far = 150f;
         camera.update();
 
         // set up the enviornment and lighting
