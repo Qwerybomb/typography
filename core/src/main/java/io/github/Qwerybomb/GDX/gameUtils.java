@@ -2,7 +2,6 @@ package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -10,19 +9,18 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public interface gameUtils {
+
     // basic variables
     Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
-    float CameraSpeed = 2f;
+    float CameraSpeed = 1f;
     Quaternion rotationQuant = new Quaternion();
     AtomicInteger DeltaX = new AtomicInteger();
     AtomicInteger DeltaY = new AtomicInteger();
@@ -56,9 +54,7 @@ public interface gameUtils {
     public default void makeCathedral(int x, int y, int z) {
         for (int i = 0; i < 5; i++) {
             modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, z);
-        }
-        for (int i = 1; i < 5; i++) {
-            modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x + (ftBounds.x * i), y, z);
+            modelAdd(floorTile, "CathedralFloor_" + i + 5).transform.setToTranslation(x - (ftBounds.x * i), y, z + ftBounds.z);
         }
     }
 
@@ -83,21 +79,28 @@ public interface gameUtils {
     };
 
     // function for player movement
-    public default void playerMovement(PerspectiveCamera camera) {
-        float sensitivity = 0.4f; // bigger = faster rotation
-        float deltaX = -DeltaX.get() * sensitivity;
-        float deltaY = -DeltaY.get() * sensitivity;
-        camera.direction.rotate(Vector3.Y, deltaX);
+    public default void playerMovement(PerspectiveCamera camera, float Speed) {
+        // makes sure cursor is caught and input processor works
+        if (!Gdx.input.isCursorCatched()) {Gdx.input.setCursorCatched(true); Gdx.input.setInputProcessor(inputs); }
+
+        // move the camera with deltas
+        camera.direction.rotate(Vector3.Y, -DeltaX.get() * CameraSpeed);
         Vector3 right = camera.direction.cpy().crs(Vector3.Y).nor();
-        camera.direction.rotate(right, deltaY);
+        camera.direction.rotate(right, -DeltaY.get() * CameraSpeed);
         camera.direction.nor();
         camera.update();
+
+        // prevents camera drifting
         DeltaX.set(0);
         DeltaY.set(0);
 
-       if (!Gdx.input.isCursorCatched()) {Gdx.input.setCursorCatched(true); Gdx.input.setInputProcessor(inputs); }
        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-           camera.position.set(camera.position.x + 1, camera.position.y, camera.position.z);
+           // calculate movements
+           float zMovement = (float) (Math.cos(Math.atan2(camera.direction.x, camera.direction.z)) * Speed);
+           float xMovement = (float) (Math.sin(Math.atan2(camera.direction.x, camera.direction.z)) * Speed);
+
+           // use trigonometry to move the player
+           camera.position.set(camera.position.x + xMovement, camera.position.y, camera.position.z + zMovement);
        }
        camera.update();
     }
