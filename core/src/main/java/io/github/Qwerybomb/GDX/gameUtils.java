@@ -20,7 +20,7 @@ public interface gameUtils {
 
     // basic variables
     Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
-    float CameraSpeed = 1f;
+    float CameraSpeed = 10f;
     Quaternion rotationQuant = new Quaternion();
     AtomicInteger DeltaX = new AtomicInteger();
     AtomicInteger DeltaY = new AtomicInteger();
@@ -55,6 +55,7 @@ public interface gameUtils {
         for (int i = 0; i < 5; i++) {
             modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, z);
             modelAdd(floorTile, "CathedralFloor_" + i + 5).transform.setToTranslation(x - (ftBounds.x * i), y, z + ftBounds.z);
+            modelAdd(floorTile, "CathedralFloor_" + i + 10).transform.setToTranslation(x - (ftBounds.x * i), y, z - ftBounds.z);
         }
     }
 
@@ -84,9 +85,17 @@ public interface gameUtils {
         if (!Gdx.input.isCursorCatched()) {Gdx.input.setCursorCatched(true); Gdx.input.setInputProcessor(inputs); }
 
         // move the camera with deltas
-        camera.direction.rotate(Vector3.Y, -DeltaX.get() * CameraSpeed);
+        float calculatedX = -DeltaX.get() * CameraSpeed * Gdx.graphics.getDeltaTime();
+        float calculatedY = -DeltaY.get() * CameraSpeed * Gdx.graphics.getDeltaTime();
+        camera.direction.rotate(Vector3.Y, calculatedX);
         Vector3 right = camera.direction.cpy().crs(Vector3.Y).nor();
-        camera.direction.rotate(right, -DeltaY.get() * CameraSpeed);
+
+        // make sure the camera doesn't ground glitch
+        if (camera.direction.cpy().rotate(right, calculatedY).y < -0.95f) {
+            calculatedY = 0;
+        }
+
+        camera.direction.rotate(right, calculatedY);
         camera.direction.nor();
         camera.update();
 
@@ -94,14 +103,28 @@ public interface gameUtils {
         DeltaX.set(0);
         DeltaY.set(0);
 
-       if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-           // calculate movements
-           float zMovement = (float) (Math.cos(Math.atan2(camera.direction.x, camera.direction.z)) * Speed);
-           float xMovement = (float) (Math.sin(Math.atan2(camera.direction.x, camera.direction.z)) * Speed);
+        float angleOffset = 0;
 
-           // use trigonometry to move the player
-           camera.position.set(camera.position.x + xMovement, camera.position.y, camera.position.z + zMovement);
+        // use trigonometry to move the player
+       if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            // no change
        }
+       if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            angleOffset += (float) Math.PI / 2;
+       }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            angleOffset += (float) -Math.PI / 2;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            angleOffset += (float) Math.PI;
+        }
+
+        float zMovement = (float) (Math.cos(Math.atan2(camera.direction.x, camera.direction.z) + angleOffset) * Speed);
+        float xMovement = (float) (Math.sin(Math.atan2(camera.direction.x, camera.direction.z) + angleOffset) * Speed);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.S)) {
+            camera.position.set(camera.position.x + xMovement, camera.position.y, camera.position.z + zMovement);
+        }
        camera.update();
     }
 

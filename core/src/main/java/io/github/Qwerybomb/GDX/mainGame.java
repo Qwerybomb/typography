@@ -75,6 +75,6 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         }
         batch.end();
 
-        playerMovement(this.camera, 1);
+        playerMovement(this.camera, 0.2f);
     }
 }
