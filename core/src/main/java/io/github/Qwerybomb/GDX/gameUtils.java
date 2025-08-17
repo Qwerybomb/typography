@@ -7,8 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
@@ -128,4 +131,16 @@ public interface gameUtils {
        camera.update();
     }
 
+    public default void Collisions (PerspectiveCamera camera, ArrayList<ModelInstance> list) {
+        Ray ray = new Ray(camera.position.cpy(), new Vector3(0, -1, 0));
+        BoundingBox bounds = new BoundingBox();
+        for (ModelInstance model : list) {
+            model.calculateBoundingBox(bounds);
+             if (Intersector.intersectRayBoundsFast(ray, bounds)) {
+                 System.out.println("collision ");
+                 System.out.print( models.get(modelNames.get(model)));
+             }
+        }
+
+    }
 }
