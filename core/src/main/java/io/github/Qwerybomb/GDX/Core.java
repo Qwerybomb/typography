@@ -1,5 +1,6 @@
 package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 public class Core extends Game {
 
@@ -12,7 +13,8 @@ public class Core extends Game {
     // disposal to prevent memory leaks
     @Override
     public void dispose() {
-
+        super.dispose();
+        Gdx.app.exit();
     }
 
     // render game loop

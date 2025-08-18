@@ -33,6 +33,9 @@ public class mainGame extends ScreenAdapter implements gameUtils {
     @Override
     public void dispose() {
       batch.dispose();
+      orbBase.dispose();
+      floorTile.dispose();
+      orb.dispose();
     }
 
     // instantiation of the camera and whatnot
@@ -76,6 +79,5 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         batch.end();
 
         playerMovement(this.camera, 0.2f);
-        Collisions(this.camera, models);
     }
 }

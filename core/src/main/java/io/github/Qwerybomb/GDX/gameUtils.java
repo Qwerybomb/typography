@@ -80,6 +80,19 @@ public interface gameUtils {
             lastMouseY = screenY;
             return true;
         }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            int deltaX = screenX - lastMouseX;
+            int deltaY = screenY - lastMouseY;
+
+            DeltaX.set(deltaX);
+            DeltaY.set(deltaY);
+
+            lastMouseX = screenX;
+            lastMouseY = screenY;
+            return true;
+        }
     };
 
     // function for player movement
@@ -131,16 +144,4 @@ public interface gameUtils {
        camera.update();
     }
 
-    public default void Collisions (PerspectiveCamera camera, ArrayList<ModelInstance> list) {
-        Ray ray = new Ray(camera.position.cpy(), new Vector3(0, -1, 0));
-        BoundingBox bounds = new BoundingBox();
-        for (ModelInstance model : list) {
-            model.calculateBoundingBox(bounds);
-             if (Intersector.intersectRayBoundsFast(ray, bounds)) {
-                 System.out.println("collision ");
-                 System.out.print( models.get(modelNames.get(model)));
-             }
-        }
-
-    }
 }
