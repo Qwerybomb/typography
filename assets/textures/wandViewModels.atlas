@@ -1,0 +1,10 @@
+wandViewModels.png
+size: 624, 482
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+empressWand
+  bounds: 0, 0, 312, 482
+fleshWand
+  bounds: 312, 0, 312, 482

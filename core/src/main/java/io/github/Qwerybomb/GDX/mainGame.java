@@ -61,6 +61,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         // create the spawn zone
         makeCathedral(0,0,0);
 
+        uiStage.addActor(wand);
     }
 
     // primary render loop and main code setup
@@ -78,6 +79,12 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         }
         batch.end();
 
+        // deal with 2d
+
         playerMovement(this.camera, 0.2f);
+        viewModelHandle(whichWand.EMPRESS);
+
+        uiStage.act(Gdx.graphics.getDeltaTime());
+        uiStage.draw();
     }
 }
