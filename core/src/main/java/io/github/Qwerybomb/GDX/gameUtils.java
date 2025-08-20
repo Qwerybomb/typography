@@ -27,6 +27,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public interface gameUtils {
 
+    // enumerators
+    enum whichWand {
+        FLESH,
+        EMPRESS;
+    }
+    enum uiState {
+        VIEW,
+        SPELLS,
+        INVENTORY;
+    }
+
     // basic variables
     Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
     float CameraSpeed = 10f;
@@ -34,6 +45,7 @@ public interface gameUtils {
     AtomicInteger DeltaX = new AtomicInteger();
     AtomicInteger DeltaY = new AtomicInteger();
     AtomicInteger headBob = new AtomicInteger();
+    whichWand equippedWand = whichWand.FLESH;
 
     // storage for all models and assets during runtime
     ArrayList<ModelInstance> models = new ArrayList<>();
@@ -46,17 +58,11 @@ public interface gameUtils {
     Model orbBase = objLoad.loadModel(Gdx.files.internal("orbBase/base.obj"), true);
     Model floorTile = objLoad.loadModel(Gdx.files.internal("floorTile/floorTile.obj"), true);
 
-    // enum for wand type
-    enum whichWand {
-        FLESH,
-        EMPRESS;
-    }
-
     // 2d handling
     Stage uiStage = new Stage(new ScreenViewport());
     TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
     TextureAtlas wands = new TextureAtlas("textures/wandViewModels.atlas");
-    Image wand = new Image(wands.findRegion("fleshWand"));
+     Image wand = new Image(wands.findRegion("fleshWand"));
 
     // functions to simplify adding and retrieving models from a list
     public default ModelInstance modelGet(String name) {
@@ -182,6 +188,6 @@ public interface gameUtils {
         }
         wand.setOrigin(Align.center);
         wand.setScale(0.65f);
-        wand.setPosition(390, (float) (-150 + (Math.cos(headBob.get()) * 2)));
+        wand.setPosition(390, (float) (-150 + (Math.cos((double) headBob.get() / 6) * 7)));
     }
 }

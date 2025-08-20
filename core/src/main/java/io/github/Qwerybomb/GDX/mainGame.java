@@ -79,12 +79,12 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         }
         batch.end();
 
-        // deal with 2d
-
-        playerMovement(this.camera, 0.2f);
-        viewModelHandle(whichWand.EMPRESS);
-
+        // render the 2d elements
         uiStage.act(Gdx.graphics.getDeltaTime());
         uiStage.draw();
+
+        playerMovement(this.camera, 0.2f);
+        viewModelHandle(equippedWand);
+
     }
 }
