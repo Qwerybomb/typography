@@ -87,4 +87,8 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         viewModelHandle(equippedWand);
 
     }
+    @Override
+    public void resize(int width, int height) {
+        uiStage.getViewport().update(width, height, true);
+    }
 }

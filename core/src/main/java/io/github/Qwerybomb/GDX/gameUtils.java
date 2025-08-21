@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
@@ -50,7 +51,6 @@ public interface gameUtils {
     // storage for all models and assets during runtime
     ArrayList<ModelInstance> models = new ArrayList<>();
     HashMap<String, Integer> modelNames = new HashMap<>();
-    ArrayList<Object> ui = new ArrayList<>();
 
     // Load in basic models
     ObjLoader objLoad = new ObjLoader();
@@ -58,8 +58,8 @@ public interface gameUtils {
     Model orbBase = objLoad.loadModel(Gdx.files.internal("orbBase/base.obj"), true);
     Model floorTile = objLoad.loadModel(Gdx.files.internal("floorTile/floorTile.obj"), true);
 
-    // 2d handling
-    Stage uiStage = new Stage(new ScreenViewport());
+    // 2d handling (FitViewport for sizing issues)
+    Stage uiStage = new Stage(new FitViewport(640, 360));
     TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
     TextureAtlas wands = new TextureAtlas("textures/wandViewModels.atlas");
      Image wand = new Image(wands.findRegion("fleshWand"));
@@ -188,6 +188,7 @@ public interface gameUtils {
         }
         wand.setOrigin(Align.center);
         wand.setScale(0.65f);
-        wand.setPosition(390, (float) (-150 + (Math.cos((double) headBob.get() / 6) * 7)));
+        // not casted to double to produce the desired effect
+        wand.setPosition(390, (float) (-155 + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
     }
 }
