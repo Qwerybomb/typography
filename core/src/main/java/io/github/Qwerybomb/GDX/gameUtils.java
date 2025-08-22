@@ -187,8 +187,9 @@ public interface gameUtils {
             wand.setDrawable(new TextureRegionDrawable(wands.findRegion("empressWand")));
         }
         wand.setOrigin(Align.center);
-        wand.setScale(0.65f);
+        wand.setScale(0.4f);
+        wand.setPosition(0, 0);
         // not casted to double to produce the desired effect
-        wand.setPosition(390, (float) (-155 + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
+        wand.setPosition(250, (float) (-350 + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
     }
 }
