@@ -42,11 +42,12 @@ public interface gameUtils {
     // basic variables
     Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
     float CameraSpeed = 10f;
-    Quaternion rotationQuant = new Quaternion();
     AtomicInteger DeltaX = new AtomicInteger();
     AtomicInteger DeltaY = new AtomicInteger();
     AtomicInteger headBob = new AtomicInteger();
+    AtomicInteger uiY = new AtomicInteger(0);
     whichWand equippedWand = whichWand.FLESH;
+    uiState state = uiState.VIEW;
 
     // storage for all models and assets during runtime
     ArrayList<ModelInstance> models = new ArrayList<>();
@@ -180,6 +181,7 @@ public interface gameUtils {
        camera.update();
     }
 
+    // function for handling the view model shown by default
     public default void viewModelHandle(whichWand wandState) {
         if (wandState == whichWand.FLESH) {
             wand.setDrawable(new TextureRegionDrawable(wands.findRegion("fleshWand")));
@@ -188,8 +190,6 @@ public interface gameUtils {
         }
         wand.setOrigin(Align.center);
         wand.setScale(0.4f);
-        wand.setPosition(0, 0);
-        // not casted to double to produce the desired effect
         wand.setPosition(250, (float) (-350 + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
     }
 }

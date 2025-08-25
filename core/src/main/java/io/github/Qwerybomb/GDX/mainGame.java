@@ -1,20 +1,11 @@
 package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.*;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.ArrayList;
 
 public class mainGame extends ScreenAdapter implements gameUtils {
 
@@ -84,7 +75,10 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         uiStage.draw();
 
         playerMovement(this.camera, 0.2f);
-        viewModelHandle(equippedWand);
+
+        if (uiState.VIEW == state) {
+            viewModelHandle(equippedWand);
+        }
 
     }
     @Override
