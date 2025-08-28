@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.*;
 
 public class mainGame extends ScreenAdapter implements gameUtils {
 
@@ -77,7 +76,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         playerMovement(this.camera, 0.2f);
 
         if (uiState.VIEW == state) {
-            viewModelHandle(equippedWand);
+            viewModelHandle(equippedItem);
         }
 
     }

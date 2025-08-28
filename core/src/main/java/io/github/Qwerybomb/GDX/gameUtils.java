@@ -3,23 +3,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public interface gameUtils {
 
     // enumerators
-    enum whichWand {
+    enum equips {
         FLESH,
         EMPRESS;
     }
@@ -46,7 +39,7 @@ public interface gameUtils {
     AtomicInteger DeltaY = new AtomicInteger();
     AtomicInteger headBob = new AtomicInteger();
     AtomicInteger uiY = new AtomicInteger(0);
-    whichWand equippedWand = whichWand.FLESH;
+    equips equippedItem = equips.FLESH;
     uiState state = uiState.VIEW;
 
     // storage for all models and assets during runtime
@@ -58,6 +51,7 @@ public interface gameUtils {
     Model orb = objLoad.loadModel(Gdx.files.internal("orb/orb2.obj"), true);
     Model orbBase = objLoad.loadModel(Gdx.files.internal("orbBase/base.obj"), true);
     Model floorTile = objLoad.loadModel(Gdx.files.internal("floorTile/floorTile.obj"), true);
+    Model wallTile = objLoad.loadModel(Gdx.files.internal("wallTile/wallTile.obj"), true);
 
     // 2d handling (FitViewport for sizing issues)
     Stage uiStage = new Stage(new FitViewport(640, 360));
@@ -67,7 +61,15 @@ public interface gameUtils {
 
     // functions to simplify adding and retrieving models from a list
     public default ModelInstance modelGet(String name) {
-        return models.get(modelNames.get(name));
+      if (!(modelNames.get(name) == null)) {
+          return models.get(modelNames.get(name));
+      }
+          System.out.print(" incorrect naming type: ");
+          System.out.println(name);
+          return new ModelInstance(new Model());
+    }
+    public default ModelInstance modelGet(Integer ID) {
+            return models.get(ID);
     }
     public default ModelInstance modelAdd(Model mod, String name) { models.add(new ModelInstance(mod)); modelNames.put(name, models.size() - 1); return modelGet(name); }
 
@@ -182,14 +184,15 @@ public interface gameUtils {
     }
 
     // function for handling the view model shown by default
-    public default void viewModelHandle(whichWand wandState) {
-        if (wandState == whichWand.FLESH) {
+    public default void viewModelHandle(equips wandState) {
+        if (wandState == equips.FLESH) {
             wand.setDrawable(new TextureRegionDrawable(wands.findRegion("fleshWand")));
+            wand.setPosition(250, (float) (-350 + uiY.get() + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
         } else {
             wand.setDrawable(new TextureRegionDrawable(wands.findRegion("empressWand")));
+            wand.setPosition(250, (float) (-390 + uiY.get() + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
         }
         wand.setOrigin(Align.center);
         wand.setScale(0.4f);
-        wand.setPosition(250, (float) (-350 + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
     }
 }
