@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -33,7 +34,8 @@ public interface gameUtils {
     }
 
     // basic variables
-    Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
+    Vector3 ftBounds = new Vector3();
+    Vector3 wallTileBounds = new Vector3();
     float CameraSpeed = 10f;
     AtomicInteger DeltaX = new AtomicInteger();
     AtomicInteger DeltaY = new AtomicInteger();
@@ -80,9 +82,20 @@ public interface gameUtils {
 
     // function for creating the spawn cathedral
     public default void makeCathedral(int x, int y, int z) {
+        // calc for Wall
+        BoundingBox boundsF = new BoundingBox();
+        wallTile.calculateBoundingBox(boundsF);
+        boundsF.getDimensions(wallTileBounds);
+
+        // calc for floor
+        BoundingBox boundsW = new BoundingBox();
+        floorTile.calculateBoundingBox(boundsW);
+//        boundsW.getDimensions(ftBounds);
+
         for (int i = 0; i < 5; i++) {
             modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, z);
             modelAdd(floorTile, "CathedralFloor_" + i + 5).transform.setToTranslation(x - (ftBounds.x * i), y, z + ftBounds.z);
+            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z + (ftBounds.z * 1.5))).rotate(new Vector3(0,1,0), -90);
             modelAdd(floorTile, "CathedralFloor_" + i + 10).transform.setToTranslation(x - (ftBounds.x * i), y, z - ftBounds.z);
         }
     }
