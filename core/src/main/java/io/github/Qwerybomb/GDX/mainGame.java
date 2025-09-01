@@ -58,6 +58,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         makeCathedral(0,0,0);
 
         uiStage.addActor(wand);
+
     }
 
     // primary render loop and main code setup
