@@ -44,15 +44,11 @@ public interface gameUtils {
     equips equippedItem = equips.FLESH;
     uiState state = uiState.VIEW;
 
-    // manage the external classes reliant on gameUtils
-    Entities entities = new Entities();
-    roomManager rooms = new roomManager();
-
     // storage for all models and assets during runtime
     ArrayList<ModelInstance> models = new ArrayList<>();
     HashMap<String, Integer> modelNames = new HashMap<>();
-    ArrayList<ArrayList<Integer>> coordinates = new ArrayList<>();
-    ArrayList<Integer> entityModelIDs = new ArrayList<>();
+    ArrayList<roomManager> rooms = new ArrayList<>();
+    ArrayList<Entities> entities = new ArrayList<>();
 
     // Load in basic models
     ObjLoader objLoad = new ObjLoader();
@@ -215,5 +211,11 @@ public interface gameUtils {
         }
         wand.setOrigin(Align.center);
         wand.setScale(0.4f);
+    }
+
+    // function to create a room
+    public default void roomCreate(int width, int length) {
+        rooms.add(new roomManager(width,length));
+        System.out.println(String.valueOf(rooms.get(0).coordinates));
     }
 }
