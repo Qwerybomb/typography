@@ -44,9 +44,15 @@ public interface gameUtils {
     equips equippedItem = equips.FLESH;
     uiState state = uiState.VIEW;
 
+    // manage the external classes reliant on gameUtils
+    Entities entities = new Entities();
+    roomManager rooms = new roomManager();
+
     // storage for all models and assets during runtime
     ArrayList<ModelInstance> models = new ArrayList<>();
     HashMap<String, Integer> modelNames = new HashMap<>();
+    ArrayList<ArrayList<Integer>> coordinates = new ArrayList<>();
+    ArrayList<Integer> entityModelIDs = new ArrayList<>();
 
     // Load in basic models
     ObjLoader objLoad = new ObjLoader();
@@ -90,13 +96,15 @@ public interface gameUtils {
         // calc for floor
         BoundingBox boundsW = new BoundingBox();
         floorTile.calculateBoundingBox(boundsW);
-//        boundsW.getDimensions(ftBounds);
+        boundsW.getDimensions(ftBounds);
 
         for (int i = 0; i < 5; i++) {
             modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, z);
             modelAdd(floorTile, "CathedralFloor_" + i + 5).transform.setToTranslation(x - (ftBounds.x * i), y, z + ftBounds.z);
             modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z + (ftBounds.z * 1.5))).rotate(new Vector3(0,1,0), -90);
             modelAdd(floorTile, "CathedralFloor_" + i + 10).transform.setToTranslation(x - (ftBounds.x * i), y, z - ftBounds.z);
+            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z - (ftBounds.z * 1.5))).rotate(new Vector3(0,1,0), 90);
+
         }
     }
 

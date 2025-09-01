@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.BaseLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
+import com.badlogic.gdx.graphics.g3d.environment.SpotLight;
 import com.badlogic.gdx.math.Vector3;
 
 public class mainGame extends ScreenAdapter implements gameUtils {
@@ -16,6 +18,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
     Core game;
     ModelBatch batch = null;
     Environment environment;
+    Entities ent = new Entities();
 
     // adds in the main core class
     mainGame(Core game) {
