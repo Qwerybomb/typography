@@ -216,6 +216,5 @@ public interface gameUtils {
     // function to create a room
     public default void roomCreate(int width, int length) {
         rooms.add(new roomManager(width,length));
-        System.out.println(String.valueOf(rooms.get(0).coordinates));
     }
 }

@@ -8,13 +8,16 @@ public class roomManager implements gameUtils {
 
     // enumerator for storage of ModelGroups for each tiled segment
     enum tileType {
-        basicFloor,
-        stoneWall,
-        windowWall;
-    public ArrayList<Model> modelGroup;
+        basicFloor(wallTile, floorTile),
+        stoneWall(),
+        windowWall();
+        public final ArrayList<Model> modelGroup;
 
-        tileType() {
+        tileType(Model... models) {
             modelGroup = new ArrayList<>();
+            for (Model m : models) {
+                modelGroup.add(m);
+            }
         }
     }
 
@@ -31,23 +34,25 @@ public class roomManager implements gameUtils {
                 coordinates.get(i - 1).get(j - 1).add(j);
             }
         }
+        // set the Width and Length properly
+        this.Width = width;
+        this.Length = length;
     }
 
     // coordinate storage for this class (x first y second)
     public ArrayList<ArrayList<ArrayList<Integer>>> coordinates = new ArrayList<>();
 
-    // personal storage for class instances
-    int coordinateX = 0;
-    int coordinateY = 0;
-    int personalModelID = 0;
+    // basic var storage for class instances
+    int Width = 0;
+    int Length = 0;
 
     // functions for dealing with coordinates
     public void cordPut(int x, int y, tileType tile) {
        int i = 0;
         while (i < tile.modelGroup.size() - 1) {
-            String modelName = String.valueOf(coordinateX) + "," + String.valueOf(coordinateY)+ "," + i;
+            String modelName = "Room: " + rooms.indexOf(this) + "-" + String.valueOf(x) + "," + String.valueOf(y)+ "," + i;
             modelAdd(tile.modelGroup.get(i), modelName);
-            coordinates.get(x).get(y);
+            coordinates.get(x).get(y).add(models.size());
             i++;
         }
     }
