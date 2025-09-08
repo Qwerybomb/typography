@@ -97,9 +97,9 @@ public interface gameUtils {
         for (int i = 0; i < 5; i++) {
             modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, z);
             modelAdd(floorTile, "CathedralFloor_" + i + 5).transform.setToTranslation(x - (ftBounds.x * i), y, z + ftBounds.z);
-            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z + (ftBounds.z * 1.5))).rotate(new Vector3(0,1,0), -90);
+            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z + (ftBounds.z) + 3.9546));
             modelAdd(floorTile, "CathedralFloor_" + i + 10).transform.setToTranslation(x - (ftBounds.x * i), y, z - ftBounds.z);
-            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z - (ftBounds.z * 1.5))).rotate(new Vector3(0,1,0), 90);
+            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z - (ftBounds.z ) - 3.9546));
 
         }
     }
@@ -214,7 +214,9 @@ public interface gameUtils {
     }
 
     // function to create a room
+    modelGroup mg = new modelGroup(floorTile, wallTile);
     public default void roomCreate(int width, int length) {
-        rooms.add(new roomManager(width,length));
+//        rooms.add(new roomManager(width,length));
+        mg.groupedModels.get(1).transform.setToTranslation(10,0,10);
     }
 }
