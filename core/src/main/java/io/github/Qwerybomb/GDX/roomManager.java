@@ -1,11 +1,19 @@
 package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class roomManager implements gameUtils {
+
+    // coordinate storage for the given room object (x first y second)
+    public ArrayList<ArrayList<ArrayList<modelGroup>>> coordinates = new ArrayList<>();
+
+    // basic var storage for class instances
+    int Width = 0;
+    int Length = 0;
+    Vector3 roomCenter = new Vector3();
 
     // enumerator for storage of ModelGroups for each tiled segment
     enum tileType {
@@ -16,22 +24,7 @@ public class roomManager implements gameUtils {
 
         tileType(Model... models) {
             modelGroup = new ArrayList<>();
-            for (Model m : models) {
-                modelGroup.add(m);
-            }
-        }
-    }
-
-    // enum for tile direction
-    enum direction {
-        FLIP(180),
-        CLOCKWISE(-90),
-        COUNTERCLOCKWISE(90);
-
-        public final int dir;
-
-        direction(int d) {
-            dir = d;
+            modelGroup.addAll(Arrays.asList(models));
         }
     }
 
@@ -40,11 +33,11 @@ public class roomManager implements gameUtils {
 
         // iterative to fill the coordinates table properly
         for (int i = 1; i <= width; i++) {
-            coordinates.add(new ArrayList<ArrayList<ModelInstance>>());
+            coordinates.add(new ArrayList<ArrayList<modelGroup>>());
 
             // iterative for the length
             for (int j = 1; j <= length; j++) {
-                coordinates.get(i - 1).add(new ArrayList<ModelInstance>());
+                coordinates.get(i - 1).add(new ArrayList<modelGroup>());
             }
         }
         // set the Width and Length properly
@@ -52,24 +45,36 @@ public class roomManager implements gameUtils {
         this.Length = length;
     }
 
-    // coordinate storage for the given room object (x first y second)
-    public ArrayList<ArrayList<ArrayList<ModelInstance>>> coordinates = new ArrayList<>();
-
-    // basic var storage for class instances
-    int Width = 0;
-    int Length = 0;
-    Vector3 roomCenter = new Vector3();
-
-    // functions for dealing with coordinates
+    // functions for adding a tile type to a specific coordinate
     public void cordPut(int x, int y, tileType tile) {
-
-        // adds all objects of a specific tile type to the models list and the coordinate list
-        for (int i = 0; i < tile.modelGroup.size(); i++) {
-            String modelName = "Room: " + rooms.indexOf(this) + "-" + String.valueOf(x) + "," + String.valueOf(y) + "," + String.valueOf(i);
-            modelAdd(tile.modelGroup.get(i), modelName);
-            coordinates.get(x).get(y).add(modelGet(modelName));
-        }
+        coordinates.get(x).get(y).add(new modelGroup(tile.modelGroup).orient(new Vector3(ftBounds.x * x, 0 , ftBounds.z * y)));
     }
 
+    // function for the room algorithm
+    public roomManager roomGenerate() {
+        int Rectangles = rand(2, 5);
+        for (int i = 0; i < 1; i++) {
+
+            // Ensure rectangles are sufficiently sized
+            int RectXMin = rand(0, this.Width - 10);
+            int RectXMax = rand(RectXMin + 3, this.Width);
+            int RectZMin = rand(0, this.Length - 10);
+            int RectZMax = rand(RectZMin + 3, this.Length);
+
+            System.out.println(RectXMin);
+            System.out.println(RectXMax);
+            System.out.println(RectZMin);
+            System.out.println(RectZMax);
+
+            // iterate to make all rectangles
+            for (int j = RectZMin; j < RectZMax; j++) {
+                for (int k = RectXMin; k < RectXMax; k++) {
+                    cordPut(k, j, tileType.basicFloor);
+                }
+            }
+        }
+
+        return this;
+    }
 }
 

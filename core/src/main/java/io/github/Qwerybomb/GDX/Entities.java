@@ -8,6 +8,7 @@ public class Entities implements gameUtils {
 
     // enum for entity types
      enum entityType {
+         PLAYER(),
          MASKEATER();
 
          public final ArrayList<Model> modelGroup;
@@ -19,12 +20,13 @@ public class Entities implements gameUtils {
              }
          }
      }
-     
+
     // entity ID's for this class
-    static ArrayList<Integer> entityModelIDs = new ArrayList<>();
+    modelGroup entity;
 
     // create an entity
-    public static Integer createEntity(entityType entity) {
-        return 0;
+    public Entities createEntity(entityType entity) {
+        this.entity = new modelGroup(entity.modelGroup);
+        return this;
     }
 }

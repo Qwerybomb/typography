@@ -18,7 +18,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
     Core game;
     ModelBatch batch = null;
     Environment environment;
-    Entities ent = new Entities();
+    modelGroup mG = new modelGroup(floorTile);
 
     // adds in the main core class
     mainGame(Core game) {
@@ -54,9 +54,6 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.5f, 0.5f, 0.5f, 1f));
         environment.add(new PointLight().set(new Color(1f, 0.2f, 0.2f, 1f), new Vector3(0,10,0), 30f));
 
-        // create the spawn zone
-//        makeCathedral(0,0,0);
-
         uiStage.addActor(wand);
         roomCreate(10,10);
 
@@ -86,9 +83,6 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         if (uiState.VIEW == state) {
             viewModelHandle(equippedItem);
         }
-
-        //test
-        mg.axisRotate(new Vector3(0,1,0), 1);
 
     }
     @Override

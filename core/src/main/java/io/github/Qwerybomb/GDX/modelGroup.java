@@ -27,7 +27,7 @@ public class modelGroup implements gameUtils {
     }
 
     // function for rotating part around a central axis
-    public void axisRotate(Vector3 axis, float degrees) {
+    public modelGroup axisRotate(Vector3 axis, float degrees) {
 
         // set up rotation matrix
         Matrix4 rotationMatrix = new Matrix4().setToRotation(axis, degrees);
@@ -39,22 +39,63 @@ public class modelGroup implements gameUtils {
             m.transform.setTranslation(centerPoint.cpy().add(offset));
             m.transform.rotate(axis, degrees);
         }
+        return this;
     }
 
+    // function for moving the parts
+    public modelGroup axisMove(float dir, float units) {
+
+        // temp vectors for all iterations
+        Vector3 offset = new Vector3((float) Math.cos(dir) * units,0, (float) Math.sin(dir) * units);
+        Vector3 position = new Vector3();
+
+        for (ModelInstance m : groupedModels) {
+            m.transform.getTranslation(position);
+
+            // modify coordinates
+            position.add(offset);
+
+            m.transform.setTranslation(position);
+        }
+        return this;
+    }
+
+    // function for forcibly reorienting all parts
+    public modelGroup orient(Vector3 location) {
+        Vector3 change = location.cpy().sub(centerPoint);
+
+        for (ModelInstance m : groupedModels) {
+            m.transform.translate(change);
+        }
+
+        // update center point
+        centerPoint.set(location);
+        return this;
+    }
     // function for setting a new centerpoint
-    public void recenter(Vector3 axis) {
+    public modelGroup recenter(Vector3 axis) {
         centerPoint = axis;
+        return this;
     }
 
     // functions for adding models to the group after init
-    public void addModel(ModelInstance... mod) {
+    public modelGroup addModel(ModelInstance... mod) {
         for (ModelInstance m : mod) {
             groupedModels.add(m);
         }
+        return this;
     }
-    public void addModel(Model... mod) {
+    public modelGroup addModel(Model... mod) {
         for (Model m : mod) {
             groupedModels.add(modelAdd(m, "placeholder"));
+        }
+        return this;
+    }
+
+    // functions for terminating a modelGroup
+    public void terminateInstance() {
+        for (ModelInstance m : groupedModels) {
+            models.remove(m);
         }
     }
 }

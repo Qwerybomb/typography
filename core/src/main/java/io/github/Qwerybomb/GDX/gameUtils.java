@@ -34,7 +34,7 @@ public interface gameUtils {
     }
 
     // basic variables
-    Vector3 ftBounds = new Vector3();
+    Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
     Vector3 wallTileBounds = new Vector3();
     float CameraSpeed = 10f;
     AtomicInteger DeltaX = new AtomicInteger();
@@ -214,9 +214,12 @@ public interface gameUtils {
     }
 
     // function to create a room
-    modelGroup mg = new modelGroup(floorTile, wallTile);
     public default void roomCreate(int width, int length) {
-//        rooms.add(new roomManager(width,length));
-        mg.groupedModels.get(1).transform.setToTranslation(10,0,10);
+        rooms.add(new roomManager(width,length).roomGenerate());
+    }
+
+    // function for randomness
+    public default int rand(double min, double max) {
+        return (int) (Math.random() * ((max + 1) - min) + min);
     }
 }
