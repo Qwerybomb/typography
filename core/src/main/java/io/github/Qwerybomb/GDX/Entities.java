@@ -29,4 +29,8 @@ public class Entities implements gameUtils {
         this.entity = new modelGroup(entity.modelGroup);
         return this;
     }
+
+    public Entities tickAdvance() {
+        return this;
+    }
 }

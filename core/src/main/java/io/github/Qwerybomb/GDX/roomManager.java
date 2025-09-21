@@ -13,7 +13,7 @@ public class roomManager implements gameUtils {
     // basic var storage for class instances
     int Width = 0;
     int Length = 0;
-    Vector3 roomCenter = new Vector3();
+    Vector3 roomCenter = new Vector3(0,0,0);
 
     // enumerator for storage of ModelGroups for each tiled segment
     enum tileType {
@@ -47,19 +47,20 @@ public class roomManager implements gameUtils {
 
     // functions for adding a tile type to a specific coordinate
     public void cordPut(int x, int y, tileType tile) {
-        coordinates.get(x).get(y).add(new modelGroup(tile.modelGroup).orient(new Vector3(ftBounds.x * x, 0 , ftBounds.z * y)));
+        coordinates.get(x).get(y).clear();
+        coordinates.get(x).get(y).add(new modelGroup(tile.modelGroup).orient(roomCenter.cpy().add(new Vector3(ftBounds.x * x, 0 , ftBounds.z * y))));
     }
 
     // function for the room algorithm
     public roomManager roomGenerate() {
-        int Rectangles = rand(2, 5);
-        for (int i = 0; i < 1; i++) {
+        int Rectangles = 1;
+        for (int i = 0; i < Rectangles; i++) {
 
             // Ensure rectangles are sufficiently sized
-            int RectXMin = rand(0, this.Width - 10);
-            int RectXMax = rand(RectXMin + 3, this.Width);
-            int RectZMin = rand(0, this.Length - 10);
-            int RectZMax = rand(RectZMin + 3, this.Length);
+            int RectXMin = rand(0, this.Width - 2);
+            int RectXMax = rand(RectXMin + 2, this.Width);
+            int RectZMin = rand(0, this.Length - 2);
+            int RectZMax = rand(RectZMin + 2, this.Length);
 
             System.out.println(RectXMin);
             System.out.println(RectXMax);
@@ -70,6 +71,7 @@ public class roomManager implements gameUtils {
             for (int j = RectZMin; j < RectZMax; j++) {
                 for (int k = RectXMin; k < RectXMax; k++) {
                     cordPut(k, j, tileType.basicFloor);
+                    System.out.println(models.get(models.size() - 1).transform.getTranslation(new Vector3()));
                 }
             }
         }

@@ -34,7 +34,7 @@ public interface gameUtils {
     }
 
     // basic variables
-    Vector3 ftBounds = new Vector3(10.898854f, 2.369924f, 10.545552f);
+    Vector3 ftBounds = new Vector3(10.545552f, 2.369924f, 10.545552f);
     Vector3 wallTileBounds = new Vector3();
     float CameraSpeed = 10f;
     AtomicInteger DeltaX = new AtomicInteger();

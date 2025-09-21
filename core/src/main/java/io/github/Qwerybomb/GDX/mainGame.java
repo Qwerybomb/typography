@@ -18,7 +18,6 @@ public class mainGame extends ScreenAdapter implements gameUtils {
     Core game;
     ModelBatch batch = null;
     Environment environment;
-    modelGroup mG = new modelGroup(floorTile);
 
     // adds in the main core class
     mainGame(Core game) {

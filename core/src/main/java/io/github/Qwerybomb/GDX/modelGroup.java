@@ -57,6 +57,8 @@ public class modelGroup implements gameUtils {
 
             m.transform.setTranslation(position);
         }
+
+        centerPoint.add(offset);
         return this;
     }
 
@@ -72,6 +74,7 @@ public class modelGroup implements gameUtils {
         centerPoint.set(location);
         return this;
     }
+
     // function for setting a new centerpoint
     public modelGroup recenter(Vector3 axis) {
         centerPoint = axis;
