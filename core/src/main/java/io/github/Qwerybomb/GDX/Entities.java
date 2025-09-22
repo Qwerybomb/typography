@@ -34,3 +34,7 @@ public class Entities implements gameUtils {
         return this;
     }
 }
+
+// class for "acting" entities in a thread
+class EntityRender extends Thread {
+}

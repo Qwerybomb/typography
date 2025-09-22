@@ -22,17 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public interface gameUtils {
 
-    // enumerators
-    enum equips {
-        FLESH,
-        EMPRESS;
-    }
-    enum uiState {
-        VIEW,
-        SPELLS,
-        INVENTORY;
-    }
-
     // basic variables
     Vector3 ftBounds = new Vector3(10.545552f, 2.369924f, 10.545552f);
     Vector3 wallTileBounds = new Vector3();
@@ -41,8 +30,6 @@ public interface gameUtils {
     AtomicInteger DeltaY = new AtomicInteger();
     AtomicInteger headBob = new AtomicInteger();
     AtomicInteger uiY = new AtomicInteger(0);
-    equips equippedItem = equips.FLESH;
-    uiState state = uiState.VIEW;
 
     // storage for all models and assets during runtime
     ArrayList<ModelInstance> models = new ArrayList<>();
@@ -57,11 +44,9 @@ public interface gameUtils {
     Model floorTile = objLoad.loadModel(Gdx.files.internal("floorTile/floorTile.obj"), true);
     Model wallTile = objLoad.loadModel(Gdx.files.internal("wallTile/wallTile.obj"), true);
 
-    // 2d handling (FitViewport for sizing issues)
-    Stage uiStage = new Stage(new FitViewport(640, 360));
+    // 2d references (FitViewport for sizing issues)
     TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
     TextureAtlas wands = new TextureAtlas("textures/wandViewModels.atlas");
-     Image wand = new Image(wands.findRegion("fleshWand"));
 
     // functions to simplify adding and retrieving models from a list
     public default ModelInstance modelGet(String name) {
@@ -198,19 +183,6 @@ public interface gameUtils {
             camera.position.set(camera.position.x + xMovement, camera.position.y, camera.position.z + zMovement);
         }
        camera.update();
-    }
-
-    // function for handling the view model shown by default
-    public default void viewModelHandle(equips wandState) {
-        if (wandState == equips.FLESH) {
-            wand.setDrawable(new TextureRegionDrawable(wands.findRegion("fleshWand")));
-            wand.setPosition(250, (float) (-350 + uiY.get() + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
-        } else {
-            wand.setDrawable(new TextureRegionDrawable(wands.findRegion("empressWand")));
-            wand.setPosition(250, (float) (-390 + uiY.get() + (Math.cos(Math.round((float) headBob.get() / 6)) * 7)));
-        }
-        wand.setOrigin(Align.center);
-        wand.setScale(0.4f);
     }
 
     // function to create a room

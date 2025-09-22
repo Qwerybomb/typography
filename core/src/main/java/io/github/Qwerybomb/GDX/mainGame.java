@@ -18,6 +18,7 @@ public class mainGame extends ScreenAdapter implements gameUtils {
     Core game;
     ModelBatch batch = null;
     Environment environment;
+    UiHandle UI;
 
     // adds in the main core class
     mainGame(Core game) {
@@ -53,8 +54,12 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.5f, 0.5f, 0.5f, 1f));
         environment.add(new PointLight().set(new Color(1f, 0.2f, 0.2f, 1f), new Vector3(0,10,0), 30f));
 
-        uiStage.addActor(wand);
         roomCreate(10,10);
+
+        // begin UI
+        UI = new UiHandle();
+        UI.start();
+        UI.uiStage.addActor(UI.wand);
 
     }
 
@@ -74,18 +79,13 @@ public class mainGame extends ScreenAdapter implements gameUtils {
         batch.end();
 
         // render the 2d elements
-        uiStage.act(Gdx.graphics.getDeltaTime());
-        uiStage.draw();
+        UI.uiStage.act(Gdx.graphics.getDeltaTime());
+        UI.uiStage.draw();
 
         playerMovement(this.camera, 0.2f);
-
-        if (uiState.VIEW == state) {
-            viewModelHandle(equippedItem);
-        }
-
     }
     @Override
     public void resize(int width, int height) {
-        uiStage.getViewport().update(width, height, true);
+        UI.uiStage.getViewport().update(width, height, true);
     }
 }
