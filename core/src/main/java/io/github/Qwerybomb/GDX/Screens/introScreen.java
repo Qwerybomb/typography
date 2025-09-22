@@ -1,4 +1,4 @@
-package io.github.Qwerybomb.GDX;
+package io.github.Qwerybomb.GDX.Screens;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import io.github.Qwerybomb.GDX.Core;
 
 public class introScreen extends ScreenAdapter {
     private Core game;
@@ -31,7 +32,7 @@ public class introScreen extends ScreenAdapter {
     Button button;
     Stage stage;
 
-    introScreen(Core game) {
+    public introScreen(Core game) {
         this.game = game;
     }
 

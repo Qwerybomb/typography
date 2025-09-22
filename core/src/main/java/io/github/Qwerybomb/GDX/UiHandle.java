@@ -20,11 +20,11 @@ public class UiHandle extends Thread implements gameUtils{
     }
 
     // set up the wand object
-    Image wand = new Image(wands.findRegion("fleshWand"));
+    public Image wand = new Image(wands.findRegion("fleshWand"));
     equips State = equips.FLESH;
 
     // setting up personal stage
-    Stage uiStage = new Stage(new FitViewport(640, 360));
+    public Stage uiStage = new Stage(new FitViewport(640, 360));
 
     @Override
     public void run() {

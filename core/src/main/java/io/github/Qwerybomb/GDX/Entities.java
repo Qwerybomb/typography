@@ -24,17 +24,25 @@ public class Entities implements gameUtils {
     // entity ID's for this class
     modelGroup entity;
 
+    // entity type per object
+    entityType type;
+
     // create an entity
     public Entities createEntity(entityType entity) {
         this.entity = new modelGroup(entity.modelGroup);
+        this.type = entity;
         return this;
     }
 
-    public Entities tickAdvance() {
-        return this;
-    }
-}
+    // anonymous Thread for the entities class
+    static Thread Logic = new Thread(new Runnable() {
+        @Override
+        public void run() {
 
-// class for "acting" entities in a thread
-class EntityRender extends Thread {
+            // uses the entities list from the gameUtils
+           for (Entities e: entities) {
+
+           }
+        }
+    });
 }

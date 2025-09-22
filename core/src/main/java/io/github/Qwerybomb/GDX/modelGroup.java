@@ -10,6 +10,7 @@ public class modelGroup implements gameUtils {
 
     // storage for all models in the list
     ArrayList<ModelInstance> groupedModels = new ArrayList<>();
+//    ArrayList<Object> groupedModels = new ArrayList<>();
 
     // var storing the modelGroup center point
     Vector3 centerPoint = new Vector3(0,0,0);

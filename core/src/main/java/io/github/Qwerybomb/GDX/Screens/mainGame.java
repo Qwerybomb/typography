@@ -1,15 +1,15 @@
-package io.github.Qwerybomb.GDX;
+package io.github.Qwerybomb.GDX.Screens;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.BaseLight;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
-import com.badlogic.gdx.graphics.g3d.environment.SpotLight;
 import com.badlogic.gdx.math.Vector3;
+import io.github.Qwerybomb.GDX.Core;
+import io.github.Qwerybomb.GDX.UiHandle;
+import io.github.Qwerybomb.GDX.gameUtils;
 
 public class mainGame extends ScreenAdapter implements gameUtils {
 

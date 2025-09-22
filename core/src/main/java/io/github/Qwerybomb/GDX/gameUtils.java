@@ -24,7 +24,6 @@ public interface gameUtils {
 
     // basic variables
     Vector3 ftBounds = new Vector3(10.545552f, 2.369924f, 10.545552f);
-    Vector3 wallTileBounds = new Vector3();
     float CameraSpeed = 10f;
     AtomicInteger DeltaX = new AtomicInteger();
     AtomicInteger DeltaY = new AtomicInteger();
@@ -65,28 +64,6 @@ public interface gameUtils {
     // function for pausing
     public default void pause(long milliseconds) throws InterruptedException {
         Thread.sleep(milliseconds);
-    }
-
-    // function for creating the spawn cathedral
-    public default void makeCathedral(int x, int y, int z) {
-        // calc for Wall
-        BoundingBox boundsF = new BoundingBox();
-        wallTile.calculateBoundingBox(boundsF);
-        boundsF.getDimensions(wallTileBounds);
-
-        // calc for floor
-        BoundingBox boundsW = new BoundingBox();
-        floorTile.calculateBoundingBox(boundsW);
-        boundsW.getDimensions(ftBounds);
-
-        for (int i = 0; i < 5; i++) {
-            modelAdd(floorTile, "CathedralFloor_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, z);
-            modelAdd(floorTile, "CathedralFloor_" + i + 5).transform.setToTranslation(x - (ftBounds.x * i), y, z + ftBounds.z);
-            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z + (ftBounds.z) + 3.9546));
-            modelAdd(floorTile, "CathedralFloor_" + i + 10).transform.setToTranslation(x - (ftBounds.x * i), y, z - ftBounds.z);
-            modelAdd(wallTile, "CathedralWall_" + i).transform.setToTranslation(x - (ftBounds.x * i), y, (float) (z - (ftBounds.z ) - 3.9546));
-
-        }
     }
 
     // anonymous inputAdapter class for precise mouse control
