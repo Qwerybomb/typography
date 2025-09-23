@@ -27,6 +27,7 @@ public class roomManager implements gameUtils {
         tileType(Object... objects) {
             ObjGroup = new ArrayList<>();
             ObjGroup.addAll(Arrays.asList(objects));
+
         }
     }
 
@@ -64,16 +65,10 @@ public class roomManager implements gameUtils {
             int RectZMin = rand(0, this.Length - 2);
             int RectZMax = rand(RectZMin + 2, this.Length);
 
-            System.out.println(RectXMin);
-            System.out.println(RectXMax);
-            System.out.println(RectZMin);
-            System.out.println(RectZMax);
-
             // iterate to make all rectangles
             for (int j = RectZMin; j < RectZMax; j++) {
                 for (int k = RectXMin; k < RectXMax; k++) {
                     cordPut(k, j, tileType.basicFloor);
-                    System.out.println(models.get(models.size() - 1).transform.getTranslation(new Vector3()));
                 }
             }
         }

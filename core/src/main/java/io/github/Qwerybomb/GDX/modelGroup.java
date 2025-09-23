@@ -21,9 +21,23 @@ public class modelGroup implements gameUtils {
     // constructors for initial filling of the object with models
     public modelGroup(Object... objects) {
         groupedObs.addAll(List.of(objects));
+        for (Object obj: objects) {
+            if (obj.getClass() == Model.class) {
+                ModelInstance mod = new ModelInstance((Model) obj);
+                models.add(mod);
+                groupedObs.set(groupedObs.indexOf(obj) + 1, mod);
+            }
+        }
     }
     public modelGroup(ArrayList<Object> objects) {
         groupedObs.add(objects);
+        for (Object obj: objects) {
+            if (obj.getClass() == Model.class) {
+                ModelInstance mod = new ModelInstance((Model) obj);
+                models.add(mod);
+                groupedObs.set(groupedObs.indexOf(obj) + 1, mod);
+            }
+        }
     }
 
     // function for rotating part around a central axis
@@ -79,6 +93,10 @@ public class modelGroup implements gameUtils {
     }
 
     // function for merging two modelGroups
+    public modelGroup merge(modelGroup m) {
+        this.groupedObs.addAll(m.groupedObs);
+        return this;
+    }
 
     // functions for terminating a modelGroup
     public void terminateInstance() {
