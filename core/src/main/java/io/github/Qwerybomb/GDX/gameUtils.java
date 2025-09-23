@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -32,9 +34,10 @@ public interface gameUtils {
 
     // storage for all models and assets during runtime
     ArrayList<ModelInstance> models = new ArrayList<>();
-    HashMap<String, Integer> modelNames = new HashMap<>();
     ArrayList<roomManager> rooms = new ArrayList<>();
     ArrayList<Entities> entities = new ArrayList<>();
+    ArrayList<Decal> decals = new ArrayList<>();
+    ArrayList<ParticleEffect> particles = new ArrayList<>();
 
     // Load in basic models
     ObjLoader objLoad = new ObjLoader();
@@ -46,20 +49,6 @@ public interface gameUtils {
     // 2d references (FitViewport for sizing issues)
     TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
     TextureAtlas wands = new TextureAtlas("textures/wandViewModels.atlas");
-
-    // functions to simplify adding and retrieving models from a list
-    public default ModelInstance modelGet(String name) {
-      if (!(modelNames.get(name) == null)) {
-          return models.get(modelNames.get(name));
-      }
-          System.out.print(" incorrect naming type: ");
-          System.out.println(name);
-          return new ModelInstance(new Model());
-    }
-    public default ModelInstance modelGet(Integer ID) {
-            return models.get(ID);
-    }
-    public default ModelInstance modelAdd(Model mod, String name) { models.add(new ModelInstance(mod)); modelNames.put(name, models.size() - 1); return modelGet(name); }
 
     // function for pausing
     public default void pause(long milliseconds) throws InterruptedException {

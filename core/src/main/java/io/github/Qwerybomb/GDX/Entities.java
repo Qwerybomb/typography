@@ -3,6 +3,7 @@ package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.graphics.g3d.Model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Entities implements gameUtils {
 
@@ -11,14 +12,12 @@ public class Entities implements gameUtils {
          PLAYER(),
          MASKEATER();
 
-         public final ArrayList<Model> modelGroup;
+        public final ArrayList<Object> ObjGroup;
 
-         entityType(Model... models) {
-             modelGroup = new ArrayList<>();
-             for (Model m : models) {
-                 modelGroup.add(m);
-             }
-         }
+        entityType(Object... objects) {
+            ObjGroup = new ArrayList<>();
+            ObjGroup.addAll(Arrays.asList(objects));
+        }
      }
 
     // entity ID's for this class
@@ -27,15 +26,14 @@ public class Entities implements gameUtils {
     // entity type per object
     entityType type;
 
-    // create an entity
-    public Entities createEntity(entityType entity) {
-        this.entity = new modelGroup(entity.modelGroup);
+    // create the entity
+    public Entities(entityType entity) {
+        this.entity = new modelGroup(entity.ObjGroup);
         this.type = entity;
-        return this;
     }
 
     // anonymous Thread for the entities class
-    static Thread Logic = new Thread(new Runnable() {
+    static Thread EntLogic = new Thread(new Runnable() {
         @Override
         public void run() {
 
@@ -45,4 +43,8 @@ public class Entities implements gameUtils {
            }
         }
     });
+
+    // functions for entity tick logic
+    private void Orb() {
+    }
 }

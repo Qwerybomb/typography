@@ -1,5 +1,6 @@
 package io.github.Qwerybomb.GDX;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -20,11 +21,12 @@ public class roomManager implements gameUtils {
         basicFloor(floorTile),
         stoneWall(),
         windowWall();
-        public final ArrayList<Model> modelGroup;
 
-        tileType(Model... models) {
-            modelGroup = new ArrayList<>();
-            modelGroup.addAll(Arrays.asList(models));
+        public final ArrayList<Object> ObjGroup;
+
+        tileType(Object... objects) {
+            ObjGroup = new ArrayList<>();
+            ObjGroup.addAll(Arrays.asList(objects));
         }
     }
 
@@ -48,7 +50,7 @@ public class roomManager implements gameUtils {
     // functions for adding a tile type to a specific coordinate
     public void cordPut(int x, int y, tileType tile) {
         coordinates.get(x).get(y).clear();
-        coordinates.get(x).get(y).add(new modelGroup(tile.modelGroup).orient(roomCenter.cpy().add(new Vector3(ftBounds.x * x, 0 , ftBounds.z * y))));
+        coordinates.get(x).get(y).add(new modelGroup(tile.ObjGroup).orient(roomCenter.cpy().add(new Vector3(ftBounds.x * x, 0 , ftBounds.z * y))));
     }
 
     // function for the room algorithm
