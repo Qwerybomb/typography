@@ -10,15 +10,8 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -49,6 +42,21 @@ public interface gameUtils {
     // 2d references (FitViewport for sizing issues)
     TextureAtlas playButtons = new TextureAtlas("textures/playButtons.atlas");
     TextureAtlas wands = new TextureAtlas("textures/wandViewModels.atlas");
+
+    // functions for adding things to the various lists
+    public default Decal decalAdd(Decal decal) {
+        decals.add(decal);
+        return decal;
+    }
+    public default ModelInstance modelAdd(ModelInstance model) {
+        models.add(model);
+        return model;
+    }
+    public default ParticleEffect particleAdd(ParticleEffect particle) {
+        particles.add(particle);
+        return particle;
+    }
+
 
     // function for pausing
     public default void pause(long milliseconds) throws InterruptedException {

@@ -7,35 +7,50 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class modelGroup implements gameUtils {
 
-    // storage for all models in the list
-    ArrayList<Object> groupedObs = new ArrayList<>();
+    // storage for all 3d elements in the object
+    ArrayList<ModelInstance> groupedModels = new ArrayList<>();
+    ArrayList<ParticleEffect> groupedParticles = new ArrayList<>();
+    ArrayList<Decal> groupedDecals = new ArrayList<>();
 
     // var storing the modelGroup center point
     Vector3 centerPoint = new Vector3(0,0,0);
 
     // constructors for initial filling of the object with models
+    public modelGroup(Model... mod) {
+        for (Model m: mod) {
+            groupedModels.add(modelAdd(new ModelInstance(m)));
+        }
+    }
     public modelGroup(Object... objects) {
-        groupedObs.addAll(List.of(objects));
-        for (Object obj: objects) {
-            if (obj.getClass() == Model.class) {
-                ModelInstance mod = new ModelInstance((Model) obj);
-                models.add(mod);
-                groupedObs.set(groupedObs.indexOf(obj) + 1, mod);
+        for (Object obj : objects) {
+            if (obj.getClass().equals(ModelInstance.class)) {
+                groupedModels.add(modelAdd((ModelInstance) obj));
+            } else if (obj.getClass().equals(Model.class)) {
+                groupedModels.add(modelAdd(new ModelInstance((Model) obj)));
+            } else if (obj.getClass().equals(ParticleEffect.class)) {
+                groupedParticles.add(particleAdd((ParticleEffect) obj));
+            } else if (obj.getClass().equals(Decal.class)) {
+                groupedDecals.add(decalAdd((Decal) obj));
+            } else {
+                System.out.println("invalid modelGroup obj Type" + obj.getClass());
             }
         }
     }
     public modelGroup(ArrayList<Object> objects) {
-        groupedObs.add(objects);
-        for (Object obj: objects) {
-            if (obj.getClass() == Model.class) {
-                ModelInstance mod = new ModelInstance((Model) obj);
-                models.add(mod);
-                groupedObs.set(groupedObs.indexOf(obj) + 1, mod);
+        for (Object obj : objects) {
+            if (obj.getClass().equals(ModelInstance.class)) {
+                groupedModels.add(modelAdd((ModelInstance) obj));
+            } else if (obj.getClass().equals(Model.class)) {
+                groupedModels.add(modelAdd(new ModelInstance((Model) obj)));
+            } else if (obj.getClass().equals(ParticleEffect.class)) {
+                groupedParticles.add(particleAdd((ParticleEffect) obj));
+            } else if (obj.getClass().equals(Decal.class)) {
+                groupedDecals.add(decalAdd((Decal) obj));
+            } else {
+                System.out.println("invalid modelGroup obj Type" + obj.getClass());
             }
         }
     }
@@ -46,15 +61,33 @@ public class modelGroup implements gameUtils {
         // set up rotation matrix
         Matrix4 rotationMatrix = new Matrix4().setToRotation(axis, degrees);
 
-        for (Object m : groupedObs) {
-            if (m.getClass() == ModelInstance.class) {
-                Vector3 position = new Vector3();
-                ((ModelInstance) m).transform.getTranslation(position);
-                Vector3 offset = position.cpy().sub(centerPoint).rot(rotationMatrix);
-                ((ModelInstance) m).transform.setTranslation(centerPoint.cpy().add(offset));
-                ((ModelInstance) m).transform.rotate(axis, degrees);
-            }
+        for (ModelInstance m : groupedModels) {
+            Vector3 position = new Vector3();
+            m.transform.getTranslation(position);
+            Vector3 offset = position.cpy().sub(centerPoint).rot(rotationMatrix);
+            m.transform.setTranslation(centerPoint.cpy().add(offset));
+            m.transform.rotate(axis, degrees);
         }
+        return this;
+    }
+
+    // function for moving the parts
+    public modelGroup axisMove(float dir, float units) {
+
+        // temp vectors for all iterations
+        Vector3 offset = new Vector3((float) Math.cos(dir) * units,0, (float) Math.sin(dir) * units);
+        Vector3 position = new Vector3();
+
+        for (ModelInstance m : groupedModels) {
+            m.transform.getTranslation(position);
+
+            // modify coordinates
+            position.add(offset);
+
+            m.transform.setTranslation(position);
+        }
+
+        centerPoint.add(offset);
         return this;
     }
 
@@ -62,13 +95,8 @@ public class modelGroup implements gameUtils {
     public modelGroup orient(Vector3 location) {
         Vector3 change = location.cpy().sub(centerPoint);
 
-        for (Object m : groupedObs) {
-            if (m.getClass() == ModelInstance.class) {
-                ((ModelInstance) m).transform.translate(change);
-            }
-            if (m.getClass() == ParticleEffect.class) {
-                ((ParticleEffect) m).translate(change);
-            }
+        for (ModelInstance m : groupedModels) {
+            m.transform.translate(change);
         }
 
         // update center point
@@ -83,24 +111,22 @@ public class modelGroup implements gameUtils {
     }
 
     // functions for adding models to the group after init
-    public modelGroup add3dObject(Object... objects) {
-        groupedObs.addAll(List.of(objects));
+    public modelGroup addModel(ModelInstance... mod) {
+        for (ModelInstance m : mod) {
+            groupedModels.add(m);
+        }
         return this;
     }
-    public modelGroup add3dObject(ArrayList<Object> objects) {
-        groupedObs.add(objects);
-        return this;
-    }
-
-    // function for merging two modelGroups
-    public modelGroup merge(modelGroup m) {
-        this.groupedObs.addAll(m.groupedObs);
+    public modelGroup addModel(Model... mod) {
+        for (Model m : mod) {
+            groupedModels.add(modelAdd(new ModelInstance(m)));
+        }
         return this;
     }
 
     // functions for terminating a modelGroup
     public void terminateInstance() {
-        for (Object m : groupedObs) {
+        for (ModelInstance m : groupedModels) {
             models.remove(m);
         }
     }
