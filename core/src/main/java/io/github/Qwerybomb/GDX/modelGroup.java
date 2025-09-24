@@ -19,11 +19,6 @@ public class modelGroup implements gameUtils {
     Vector3 centerPoint = new Vector3(0,0,0);
 
     // constructors for initial filling of the object with models
-    public modelGroup(Model... mod) {
-        for (Model m: mod) {
-            groupedModels.add(modelAdd(new ModelInstance(m)));
-        }
-    }
     public modelGroup(Object... objects) {
         for (Object obj : objects) {
             if (obj.getClass().equals(ModelInstance.class)) {

@@ -1,6 +1,7 @@
 package io.github.Qwerybomb.GDX.Screens;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -31,6 +32,7 @@ public class introScreen extends ScreenAdapter {
     Skin buttonSkin;
     Button button;
     Stage stage;
+    ParticleEffect effect;
 
     public introScreen(Core game) {
         this.game = game;
@@ -49,12 +51,24 @@ public class introScreen extends ScreenAdapter {
         Mbatch.render(base, environment);
         Mbatch.end();
 
+        // SpriteBatch for particles
+        batch.begin();
+        if (button.isOver()) {
+            effect.draw(batch, Gdx.graphics.getDeltaTime());
+        }
+        batch.end();
+
+
         // draw Ui elements
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         if (button.isPressed()) {
             game.setScreen(new mainGame(this.game));
         }
+
+        // logic for particles
+        effect.setPosition(button.getX() - 30, button.getY() + 30);
+
 
         // perform transformations
         orbMovement += 0.03;
@@ -115,6 +129,11 @@ public class introScreen extends ScreenAdapter {
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.2f, 0.2f, 0.2f, 0.2f));
         environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, -0.8f, -0.8f));
+
+        // create particles
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("Particles\\menuParts.p"), Gdx.files.internal("Particles/"));
+        effect.start();
     }
 
 
